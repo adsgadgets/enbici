@@ -68,13 +68,16 @@ EnBici es una plataforma móvil tipo "Uber" para ciclistas en Colombia. Conecta 
 - **Logs:** Winston logger, no `console.log` en producción
 - **Tests:** Jest + Supertest, cobertura mínima 60% en módulos de pagos y SOS
 
-### Mobile (React Native + Expo)
-- **Gestor de estado:** Zustand (no Redux)
-- **Navegación:** React Navigation v6
-- **Estilos:** StyleSheet de React Native + design tokens en `src/constants/theme.js`
-- **Tamaño mínimo de botones táctiles:** 48×48px (uso con guantes)
-- **Dark mode:** activado por defecto
-- **Fuente:** Inter (descargada con `expo-font`)
+### Mobile (Flutter + Dart)
+- **Gestor de estado:** Riverpod (no BLoC, no Provider simple)
+- **Navegación:** GoRouter v14+
+- **Tema:** `AppTheme.darkTheme` en `lib/core/theme/app_theme.dart` — dark mode por defecto
+- **Tamaño mínimo de botones táctiles:** 48×48px (`AppSizes.tapTargetMin`) — uso con guantes
+- **Botón SOS:** usar SIEMPRE el widget `SOSButton` de `lib/shared/widgets/sos_button.dart`
+- **Fuente:** Inter (definida en `pubspec.yaml` como asset)
+- **GPS background:** usar `flutter_background_geolocation`, NO geolocator solo (no funciona en background en iOS)
+- **GPS offline:** guardar en SQLite con `sqflite`, tabla `gps_queue`, sync con `POST /tracking/batch-sync`
+- **idempotency_key:** generar con el paquete `uuid` (`const Uuid().v4()`) ANTES de llamar a la API de pagos
 
 ### Convenciones de Commits
 ```
@@ -92,7 +95,7 @@ Ejemplos:
 ## Arquitectura Rápida
 
 ```
-Cliente móvil (Expo)
+Cliente móvil (Flutter — compilado nativo ARM)
     ↓ HTTPS + WebSocket
 API Gateway / Load Balancer (AWS ALB)
     ↓

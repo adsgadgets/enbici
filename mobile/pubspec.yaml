@@ -1,0 +1,107 @@
+name: enbici
+description: Plataforma de acompañamiento de seguridad para ciclistas en Colombia
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ========================
+  # MAPAS Y UBICACION
+  # ========================
+  google_maps_flutter: ^2.9.0        # Mapa principal con pins en tiempo real
+  geolocator: ^12.0.0                # GPS en background, alta precisión
+  flutter_background_geolocation: ^4.16.0  # GPS offline y en background
+
+  # ========================
+  # FIREBASE (Auth + Push)
+  # ========================
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1              # OTP SMS Colombia
+  firebase_messaging: ^15.1.3        # Notificaciones push FCM
+
+  # ========================
+  # REAL-TIME (Socket.io)
+  # ========================
+  socket_io_client: ^2.0.3+1         # WebSocket para GPS tracking
+
+  # ========================
+  # HTTP Y API
+  # ========================
+  dio: ^5.7.0                        # HTTP client con interceptores
+  retrofit: ^4.4.1                   # Generador de API client
+
+  # ========================
+  # ESTADO (Riverpod)
+  # ========================
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # ========================
+  # NAVEGACION
+  # ========================
+  go_router: ^14.6.1
+
+  # ========================
+  # ALMACENAMIENTO LOCAL
+  # ========================
+  sqflite: ^2.4.0                    # SQLite: queue GPS offline en montaña
+  flutter_secure_storage: ^9.2.2     # JWT tokens seguros
+  shared_preferences: ^2.3.2        # Preferencias simples
+
+  # ========================
+  # PAGOS
+  # ========================
+  # Wompi se integra vía WebView + deeplink o SDK nativo
+  webview_flutter: ^4.9.0
+
+  # ========================
+  # UX Y FEEDBACK
+  # ========================
+  vibration: ^2.0.0                  # Feedback háptico SOS
+  flutter_local_notifications: ^17.2.3
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0                    # Loading skeletons
+
+  # ========================
+  # UTILIDADES
+  # ========================
+  flutter_dotenv: ^5.2.1            # Variables de entorno
+  intl: ^0.19.0                     # Formato moneda COP, fechas español
+  uuid: ^4.5.1                      # Generar idempotency_keys
+  permission_handler: ^11.3.1       # Permisos GPS, micrófono, cámara
+  image_picker: ^1.1.2              # Fotos de documentos (acompañantes)
+  connectivity_plus: ^6.0.5         # Detectar pérdida de señal → SQLite
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.13
+  riverpod_generator: ^2.4.3
+  retrofit_generator: ^9.1.6
+  json_serializable: ^6.8.0
+  mockito: ^5.4.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/fonts/
+    - .env
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700

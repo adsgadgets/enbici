@@ -7,10 +7,11 @@
 │                    CLIENTES MÓVILES                         │
 │                                                             │
 │  [App Ciclista]   [App Acompañante Moto]   [App Conductor]  │
-│  React Native + Expo (iOS + Android)                        │
-│  - Google Maps SDK          - Expo Location                 │
-│  - Firebase Auth (OTP)      - Socket.io Client              │
-│  - SQLite (queue offline)   - Wompi SDK                     │
+│  Flutter (Dart) — compilado nativo ARM iOS + Android        │
+│  - google_maps_flutter      - flutter_background_geolocation│
+│  - firebase_auth (OTP)      - socket_io_client              │
+│  - sqflite (queue offline)  - Riverpod (estado)             │
+│  - go_router (navegación)   - vibration (háptico SOS)       │
 └──────────────────────────┬──────────────────────────────────┘
                            │ HTTPS (443) + WSS (443)
                            │
@@ -319,6 +320,9 @@ function getSurgePricing(horaLocal) {
 ## Decisiones Arquitectónicas
 
 Ver carpeta `decisions/` para los ADRs completos.
+
+### Flutter vs React Native
+Flutter compila a código nativo ARM (no JS bridge), lo que da 60fps consistentes durante el tracking GPS en el mapa. El paquete `flutter_background_geolocation` maneja correctamente el GPS en background en iOS (donde React Native requiere configuración manual compleja). El SDK `google_maps_flutter` es el oficial de Google. Dart tipado estáticamente reduce errores en producción. Estado con Riverpod es más predecible que hooks de React para un equipo no-JS.
 
 ### Monolito modular → Microservicios
 El MVP usa un monolito modular. Cada módulo (`auth`, `rides`, `payments`, etc.) tiene su propia carpeta con routes, controllers y services. Si el volumen lo requiere, cada módulo puede extraerse como microservicio independiente sin refactor masivo.

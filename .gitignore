@@ -20,21 +20,27 @@ package-lock.json
 yarn.lock
 
 # ========================
-# REACT NATIVE / EXPO
+# FLUTTER / DART
 # ========================
-.expo/
-.expo-shared/
-dist/
-web-build/
-ios/
-android/
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-metro-bundler.log
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/build/
+mobile/.fvm/
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+mobile/android/.gradle/
+mobile/android/captures/
+mobile/android/local.properties
+mobile/android/GeneratedPluginRegistrant.java
+mobile/ios/Runner.xcworkspace/
+mobile/**/*.g.dart              # Archivos generados por build_runner
+mobile/**/*.freezed.dart
+# Credenciales Firebase nativas (NUNCA commitear)
+mobile/android/app/google-services.json
+mobile/ios/Runner/GoogleService-Info.plist
+mobile/.env                     # Variables de entorno Flutter
 
 # ========================
 # BUILD / DIST

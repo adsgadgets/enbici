@@ -16,12 +16,14 @@ Las rutas de montaña colombianas son hermosas pero peligrosas. Un pinchazo en e
 
 | Capa | Tecnología | Por qué |
 |------|------------|---------|
-| Mobile | React Native + Expo | iOS + Android con un solo código |
+| Mobile | **Flutter (Dart)** | Compilación nativa ARM iOS+Android, 60fps fluido, un solo código |
+| Estado | Riverpod | Reactivo, testeable, sin boilerplate excesivo |
+| Mapas | google_maps_flutter | SDK oficial Google, mejor cobertura rural Colombia |
+| GPS | geolocator + flutter_background_geolocation | GPS en background, offline queue SQLite |
 | Backend | Node.js + Express.js | Rápido para MVP, Socket.io nativo |
 | Base de datos | PostgreSQL 15 + PostGIS | Geoqueries optimizadas, transacciones ACID |
 | Real-time | Socket.io + Redis Pub/Sub | Latencia rural ~250ms (vs 800ms Firebase RTDB) |
 | Autenticación | Firebase Auth (OTP SMS) | Verificación telefónica nativa Colombia |
-| Mapas | Google Maps API | Mejor cobertura en zonas rurales colombianas |
 | Pagos | Wompi (principal) + Bold (fallback) | Nativos Colombia, comisión 2.4% |
 | Almacenamiento | AWS S3 + CloudFront | Fotos y videos de entrenamientos |
 | Infraestructura | AWS sa-east-1 (São Paulo) | LATAM, acepta COP |
@@ -60,18 +62,28 @@ enbici/
 │   │   └── seeds/              # Datos de prueba
 │   └── tests/                  # Jest + Supertest
 │
-├── mobile/                     # React Native + Expo
-│   └── src/
-│       ├── screens/
-│       │   ├── cyclist/        # 11 pantallas del ciclista
-│       │   ├── companion/      # 10 pantallas del acompañante en moto
-│       │   └── driver/         # 11 pantallas del conductor de auto
-│       ├── components/         # Componentes reutilizables
-│       ├── navigation/         # React Navigation stacks
-│       ├── hooks/              # Custom hooks (useLocation, useSocket, etc.)
-│       ├── services/           # API client, Firebase, Google Maps
-│       ├── store/              # Zustand stores
-│       └── assets/             # Imágenes, fuentes, íconos
+├── mobile/                     # Flutter (Dart)
+│   ├── lib/
+│   │   ├── main.dart
+│   │   ├── core/
+│   │   │   ├── constants/      # ApiConstants, FareConstants, SOSConstants
+│   │   │   ├── theme/          # AppTheme, AppColors, AppSizes
+│   │   │   └── utils/
+│   │   ├── features/
+│   │   │   ├── auth/           # Login OTP, onboarding
+│   │   │   ├── cyclist/        # 11 pantallas del ciclista
+│   │   │   ├── companion/      # 10 pantallas del acompañante en moto
+│   │   │   └── driver/         # 11 pantallas del conductor de auto
+│   │   ├── shared/
+│   │   │   ├── widgets/        # SOSButton, CompanionMap, FareCard...
+│   │   │   ├── services/       # ApiService, SocketService, LocationService
+│   │   │   └── providers/      # Riverpod providers compartidos
+│   │   └── models/             # DTOs: Ride, User, Vehicle, Transaction
+│   ├── assets/
+│   │   ├── images/
+│   │   └── fonts/              # Inter (visibilidad bajo sol)
+│   ├── test/
+│   └── pubspec.yaml
 │
 ├── docs/                       # Documentación del proyecto
 │   ├── 00-vision-del-producto.md
@@ -134,12 +146,13 @@ npm run seed      # Datos de prueba (opcional)
 npm run dev       # Puerto 3000
 ```
 
-### 4. Iniciar app móvil
+### 4. Iniciar app Flutter
 ```bash
 cd mobile
-npm install
-npx expo start
-# Escanear QR con Expo Go (Android/iOS)
+flutter pub get
+flutter run                   # Requiere emulador o dispositivo físico
+# iOS: flutter run -d ios
+# Android: flutter run -d android
 ```
 
 ---
