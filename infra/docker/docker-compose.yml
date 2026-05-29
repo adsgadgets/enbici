@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # ============================================================
+  # PostgreSQL 15 + PostGIS
+  # Acceso: localhost:5432
+  # ============================================================
+  postgres:
+    image: postgis/postgis:15-3.4
+    container_name: enbici-postgres
+    environment:
+      POSTGRES_DB: enbici_dev
+      POSTGRES_USER: enbici_user
+      POSTGRES_PASSWORD: enbici_dev_password_2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U enbici_user -d enbici_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ============================================================
+  # Redis 7
+  # Acceso: localhost:6379
+  # Usado para: Socket.io Pub/Sub, caché de sesiones
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    container_name: enbici-redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ============================================================
+  # pgAdmin 4 — Interfaz gráfica para PostgreSQL
+  # Acceso: http://localhost:5050
+  # Email: admin@enbici.co / Password: enbici_admin
+  # ============================================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: enbici-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@enbici.co
+      PGADMIN_DEFAULT_PASSWORD: enbici_admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    name: enbici_postgres_data
+  redis_data:
+    name: enbici_redis_data
+  pgadmin_data:
+    name: enbici_pgadmin_data
+
+networks:
+  default:
+    name: enbici_network
