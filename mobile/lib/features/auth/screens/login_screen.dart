@@ -42,7 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authState = ref.read(authNotifierProvider);
     authState.whenOrNull(
       data: (state) {
-        if (state is _CodeSent) {
+        if (state is AuthCodeSent) {
           context.push(
             '/otp',
             extra: _phoneController.text.trim(),

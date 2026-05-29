@@ -138,26 +138,26 @@ class AuthNotifier extends AsyncNotifier<AuthFlowState> {
 sealed class AuthFlowState {
   const AuthFlowState();
 
-  const factory AuthFlowState.idle() = _Idle;
+  const factory AuthFlowState.idle() = AuthIdle;
   const factory AuthFlowState.codeSent({
     required String verificationId,
     required String phoneNumber,
-  }) = _CodeSent;
+  }) = AuthCodeSent;
   const factory AuthFlowState.authenticated({required UserModel user}) =
-      _Authenticated;
+      AuthAuthenticated;
 }
 
-class _Idle extends AuthFlowState {
-  const _Idle();
+class AuthIdle extends AuthFlowState {
+  const AuthIdle();
 }
 
-class _CodeSent extends AuthFlowState {
-  const _CodeSent({required this.verificationId, required this.phoneNumber});
+class AuthCodeSent extends AuthFlowState {
+  const AuthCodeSent({required this.verificationId, required this.phoneNumber});
   final String verificationId;
   final String phoneNumber;
 }
 
-class _Authenticated extends AuthFlowState {
-  const _Authenticated({required this.user});
+class AuthAuthenticated extends AuthFlowState {
+  const AuthAuthenticated({required this.user});
   final UserModel user;
 }

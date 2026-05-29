@@ -78,7 +78,7 @@ class AppTheme {
     ),
 
     // Cards: superficie ligeramente más clara que el fondo
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: AppColors.surface,
       elevation: 0,
       shape: RoundedRectangleBorder(

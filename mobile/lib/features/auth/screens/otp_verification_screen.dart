@@ -76,7 +76,7 @@ class _OtpVerificationScreenState
     final authState = ref.read(authNotifierProvider);
     final verificationId = authState.valueOrNull;
 
-    if (verificationId is _CodeSent) {
+    if (verificationId is AuthCodeSent) {
       await ref.read(authNotifierProvider.notifier).verifyCode(
             verificationId: verificationId.verificationId,
             smsCode: code,
@@ -129,7 +129,7 @@ class _OtpVerificationScreenState
     ref.listen(authNotifierProvider, (_, next) {
       next.whenOrNull(
         data: (state) {
-          if (state is _Authenticated) {
+          if (state is AuthAuthenticated) {
             // Si es nuevo usuario → selección de rol
             // Si ya tiene perfil → dashboard del ciclista
             context.go('/cyclist/dashboard');
